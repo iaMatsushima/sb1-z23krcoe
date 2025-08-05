@@ -17,30 +17,32 @@ import { mockProjectAssignments, mockStandbyMembers, mockLeaveMembers } from './
 type UserRole = 'admin' | 'sales' | 'tech_leader' | 'tech_general';
 
 const LoginScreen = ({ onLogin }: { onLogin: (role: UserRole) => void }) => (
-  <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+  <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
     <div className="max-w-md w-full">
-      <div className="bg-white rounded-lg shadow-md p-8">
+      <div className="bg-white rounded-xl shadow-xl border border-slate-100 p-8">
         <div className="text-center mb-8">
-          <Building className="h-12 w-12 text-slate-700 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-slate-800">社員管理システム</h1>
-          <p className="text-slate-600 mt-2">ログインしてください</p>
+          <div className="h-16 w-16 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Building className="h-8 w-8 text-white" />
+          </div>
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">社員管理システム</h1>
+          <p className="text-slate-500 mt-2">ログインしてください</p>
         </div>
         
         <form className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">メールアドレス</label>
+            <label className="block text-sm font-medium text-slate-600 mb-2">メールアドレス</label>
             <input
               type="email"
-              className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
               placeholder="your.email@company.com"
             />
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">パスワード</label>
+            <label className="block text-sm font-medium text-slate-600 mb-2">パスワード</label>
             <input
               type="password"
-              className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
               placeholder="••••••••"
             />
           </div>
@@ -48,7 +50,7 @@ const LoginScreen = ({ onLogin }: { onLogin: (role: UserRole) => void }) => (
           <button
             type="button"
             onClick={() => onLogin('admin')}
-            className="w-full bg-slate-800 text-white py-2 px-4 rounded-md hover:bg-slate-700 transition-colors"
+            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-4 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
           >
             ログイン
           </button>
@@ -56,17 +58,17 @@ const LoginScreen = ({ onLogin }: { onLogin: (role: UserRole) => void }) => (
           <div className="text-center">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-slate-300"></div>
+                <div className="w-full border-t border-slate-200"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-slate-500">または</span>
+                <span className="px-3 bg-white text-slate-400">または</span>
               </div>
             </div>
             
             <button
               type="button"
               onClick={() => onLogin('admin')}
-              className="mt-4 w-full bg-white border border-slate-300 text-slate-700 py-2 px-4 rounded-md hover:bg-slate-50 transition-colors flex items-center justify-center gap-2"
+              className="mt-4 w-full bg-white border border-slate-200 text-slate-600 py-3 px-4 rounded-lg hover:bg-slate-50 transition-all duration-200 flex items-center justify-center gap-2 font-medium shadow-sm hover:shadow-md"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
                 <path fill="#4285f4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
