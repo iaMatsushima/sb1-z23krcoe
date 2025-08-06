@@ -465,22 +465,6 @@ const App = () => {
             onAddQualification={handleAddQualification}
           />
         )}
-        {activeTab === 'business-categories' && (
-          <BusinessCategoryList 
-            businessCategories={businessCategories}
-            onBusinessCategoryEdit={handleBusinessCategoryEdit}
-            onAddBusinessCategory={handleAddBusinessCategory}
-            onBusinessCategoryDelete={handleBusinessCategoryDelete}
-          />
-        )}
-        {activeTab === 'departments' && (
-          <DepartmentList 
-            departments={departments}
-            onDepartmentEdit={handleDepartmentEdit}
-            onAddDepartment={handleAddDepartment}
-            onDepartmentDelete={handleDepartmentDelete}
-          />
-        )}
         {activeTab === 'detail' && selectedEmployee && <EmployeeDetail employee={selectedEmployee} onEdit={handleEmployeeEdit} />}
         {activeTab === 'edit' && selectedEmployee && (
           <EmployeeEdit 
@@ -523,11 +507,27 @@ const App = () => {
             onCancel={handleQualificationEditCancel} 
           />
         )}
+        {activeTab === 'business-categories' && (
+          <BusinessCategoryList 
+            categories={businessCategories}
+            onCategoryEdit={handleBusinessCategoryEdit}
+            onCategoryDelete={handleBusinessCategoryDelete}
+            onAddCategory={handleAddBusinessCategory}
+          />
+        )}
         {activeTab === 'business-category-edit' && (
           <BusinessCategoryEdit 
-            businessCategory={selectedBusinessCategory || undefined}
+            category={selectedBusinessCategory || undefined}
             onSave={handleBusinessCategorySave} 
             onCancel={handleBusinessCategoryEditCancel} 
+          />
+        )}
+        {activeTab === 'departments' && (
+          <DepartmentList 
+            departments={departments}
+            onDepartmentEdit={handleDepartmentEdit}
+            onDepartmentDelete={handleDepartmentDelete}
+            onAddDepartment={handleAddDepartment}
           />
         )}
         {activeTab === 'department-edit' && (
