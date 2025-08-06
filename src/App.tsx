@@ -11,9 +11,10 @@ import { EmployeeDetail } from './components/EmployeeDetail';
 import { EmployeeEdit } from './components/EmployeeEdit';
 import { Company } from './types/Company';
 import { Employee } from './types/Employee';
+import { ProjectAssignment } from './types/Project';
 import { mockCompanies } from './data/mockCompanies';
 import { mockEmployees } from './data/mockEmployees';
-import { mockProjectAssignments, mockStandbyMembers, mockLeaveMembers, ProjectAssignment } from './data/mockProjects';
+import { mockProjectAssignments, mockStandbyMembers, mockLeaveMembers } from './data/mockProjects';
 
 type UserRole = 'admin' | 'sales' | 'tech_leader' | 'tech_general';
 
