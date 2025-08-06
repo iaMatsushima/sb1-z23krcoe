@@ -28,6 +28,7 @@ import { mockBusinessCategories, mockDepartments } from './data/mockSettings';
 
 type UserRole = 'admin' | 'sales' | 'tech_leader' | 'tech_general';
 
+const LoginScreen: React.FC<{ onLogin: (role: UserRole) => void }> = ({ onLogin }) => (
   <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
     <div className="max-w-md w-full">
       <div className="bg-white rounded-xl shadow-xl border border-slate-100 p-8">

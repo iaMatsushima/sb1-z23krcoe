@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Plus, X, Building2, Calendar, CheckCircle, XCircle, User, Trash2 } from 'lucide-react';
 import { Employee, Dependent } from '../types/Employee';
 import { mockBusinessCategories, mockDepartments } from '../data/mockSettings';
+import { mockBusinessCategories, mockDepartments } from '../data/mockSettings';
 
 interface EmployeeEditProps {
   employee?: Employee;

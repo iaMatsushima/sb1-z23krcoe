@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Plus, X, Building2, Calendar, CheckCircle, XCircle } from 'lucide-react';
 import { Company, ContractInfo, CompanyMember } from '../types/Company';
+import { mockBusinessCategories } from '../data/mockSettings';
 
 interface CompanyEditProps {
   company?: Company;
