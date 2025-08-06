@@ -9,12 +9,16 @@ import { ProjectEdit } from './components/ProjectEdit';
 import { EmployeeList } from './components/EmployeeList';
 import { EmployeeDetail } from './components/EmployeeDetail';
 import { EmployeeEdit } from './components/EmployeeEdit';
+import { QualificationList } from './components/QualificationList';
+import { QualificationEdit } from './components/QualificationEdit';
 import { Company } from './types/Company';
 import { Employee } from './types/Employee';
 import { ProjectAssignment } from './types/Project';
+import { Qualification } from './types/Qualification';
 import { mockCompanies } from './data/mockCompanies';
 import { mockEmployees } from './data/mockEmployees';
 import { mockProjectAssignments, mockStandbyMembers, mockLeaveMembers } from './data/mockProjects';
+import { mockQualifications, mockQualificationStats } from './data/mockQualifications';
 
 type UserRole = 'admin' | 'sales' | 'tech_leader' | 'tech_general';
 
@@ -90,13 +94,15 @@ const LoginScreen = ({ onLogin }: { onLogin: (role: UserRole) => void }) => (
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState<UserRole>('admin');
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'employees' | 'companies' | 'projects' | 'detail' | 'edit' | 'company-detail' | 'company-edit' | 'project-edit'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'employees' | 'companies' | 'projects' | 'qualifications' | 'settings' | 'detail' | 'edit' | 'company-detail' | 'company-edit' | 'project-edit' | 'qualification-edit'>('dashboard');
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
   const [selectedProject, setSelectedProject] = useState<ProjectAssignment | null>(null);
+  const [selectedQualification, setSelectedQualification] = useState<Qualification | null>(null);
   const [employees, setEmployees] = useState<Employee[]>(mockEmployees);
   const [companies, setCompanies] = useState<Company[]>(mockCompanies);
   const [projectAssignments, setProjectAssignments] = useState<ProjectAssignment[]>(mockProjectAssignments);
+  const [qualifications, setQualifications] = useState<Qualification[]>(mockQualifications);
 
   const handleLogin = (role: UserRole) => {
     setUserRole(role);
@@ -109,6 +115,7 @@ const App = () => {
     setSelectedEmployee(null);
     setSelectedCompany(null);
     setSelectedProject(null);
+    setSelectedQualification(null);
   };
 
   const handleEmployeeDetail = (employee: Employee) => {
@@ -201,6 +208,30 @@ const App = () => {
     setActiveTab('projects');
   };
 
+  const handleAddQualification = () => {
+    setSelectedQualification(null);
+    setActiveTab('qualification-edit');
+  };
+
+  const handleQualificationEdit = (qualification: Qualification) => {
+    setSelectedQualification(qualification);
+    setActiveTab('qualification-edit');
+  };
+
+  const handleQualificationSave = (qualification: Qualification) => {
+    if (selectedQualification) {
+      setQualifications(prev => prev.map(q => q.id === qualification.id ? qualification : q));
+    } else {
+      setQualifications(prev => [...prev, qualification]);
+    }
+    setSelectedQualification(qualification);
+    setActiveTab('qualifications');
+  };
+
+  const handleQualificationEditCancel = () => {
+    setActiveTab('qualifications');
+  };
+
   if (!isLoggedIn) {
     return <LoginScreen onLogin={handleLogin} />;
   }
@@ -261,6 +292,17 @@ const App = () => {
                 案件情報
               </button>
               <button
+                onClick={() => setActiveTab('settings')}
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  activeTab === 'settings' || activeTab === 'qualifications' || activeTab === 'qualification-edit'
+                    ? 'bg-slate-100 text-slate-900'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                <Settings className="h-4 w-4 inline mr-2" />
+                設定
+              </button>
+              <button
                 onClick={handleLogout}
                 className="text-slate-600 hover:text-slate-900 px-3 py-2 rounded-md text-sm font-medium transition-colors"
               >
@@ -292,10 +334,45 @@ const App = () => {
             onProjectEdit={handleProjectEdit}
           />
         )}
+        {activeTab === 'settings' && (
+          <div className="space-y-6">
+            <h2 className="text-xl font-semibold text-slate-800">設定</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <button
+                onClick={() => setActiveTab('qualifications')}
+                className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow text-left"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <Award className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-slate-800">資格管理</h3>
+                    <p className="text-sm text-slate-600">資格一覧の管理と統計</p>
+                  </div>
+                </div>
+              </button>
+            </div>
+          </div>
+        )}
+        {activeTab === 'qualifications' && (
+          <QualificationList 
+            qualifications={qualifications}
+            qualificationStats={mockQualificationStats}
+            onQualificationEdit={handleQualificationEdit}
+            onAddQualification={handleAddQualification}
+          />
+        )}
         {activeTab === 'detail' && selectedEmployee && <EmployeeDetail employee={selectedEmployee} onEdit={handleEmployeeEdit} />}
         {activeTab === 'edit' && selectedEmployee && (
           <EmployeeEdit 
             employee={selectedEmployee || undefined}
+            onSave={handleEmployeeSave} 
+            onCancel={handleEditCancel} 
+          />
+        )}
+        {activeTab === 'edit' && !selectedEmployee && (
+          <EmployeeEdit 
             onSave={handleEmployeeSave} 
             onCancel={handleEditCancel} 
           />
@@ -321,6 +398,13 @@ const App = () => {
             onAddEmployee={handleAddEmployee}
          />
        )}
+        {activeTab === 'qualification-edit' && (
+          <QualificationEdit 
+            qualification={selectedQualification || undefined}
+            onSave={handleQualificationSave} 
+            onCancel={handleQualificationEditCancel} 
+          />
+        )}
       </main>
     </div>
   );
