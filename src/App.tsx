@@ -244,6 +244,68 @@ const App = () => {
     setActiveTab('qualifications');
   };
 
+  // Business Category handlers
+  const handleAddBusinessCategory = () => {
+    setSelectedBusinessCategory(null);
+    setActiveTab('business-category-edit');
+  };
+
+  const handleBusinessCategoryEdit = (category: BusinessCategory) => {
+    setSelectedBusinessCategory(category);
+    setActiveTab('business-category-edit');
+  };
+
+  const handleBusinessCategorySave = (category: BusinessCategory) => {
+    if (selectedBusinessCategory) {
+      setBusinessCategories(prev => prev.map(c => c.id === category.id ? category : c));
+    } else {
+      setBusinessCategories(prev => [...prev, category]);
+    }
+    setSelectedBusinessCategory(category);
+    setActiveTab('business-categories');
+  };
+
+  const handleBusinessCategoryEditCancel = () => {
+    setActiveTab('business-categories');
+  };
+
+  const handleBusinessCategoryDelete = (categoryId: string) => {
+    if (confirm('この事業分類を削除しますか？')) {
+      setBusinessCategories(prev => prev.filter(c => c.id !== categoryId));
+    }
+  };
+
+  // Department handlers
+  const handleAddDepartment = () => {
+    setSelectedDepartment(null);
+    setActiveTab('department-edit');
+  };
+
+  const handleDepartmentEdit = (department: Department) => {
+    setSelectedDepartment(department);
+    setActiveTab('department-edit');
+  };
+
+  const handleDepartmentSave = (department: Department) => {
+    if (selectedDepartment) {
+      setDepartments(prev => prev.map(d => d.id === department.id ? department : d));
+    } else {
+      setDepartments(prev => [...prev, department]);
+    }
+    setSelectedDepartment(department);
+    setActiveTab('departments');
+  };
+
+  const handleDepartmentEditCancel = () => {
+    setActiveTab('departments');
+  };
+
+  const handleDepartmentDelete = (departmentId: string) => {
+    if (confirm('この部署を削除しますか？')) {
+      setDepartments(prev => prev.filter(d => d.id !== departmentId));
+    }
+  };
+
   if (!isLoggedIn) {
     return <LoginScreen onLogin={handleLogin} />;
   }
