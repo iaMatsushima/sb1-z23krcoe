@@ -463,7 +463,10 @@ const App = () => {
             qualificationStats={mockQualificationStats}
             onQualificationEdit={handleQualificationEdit}
             onAddQualification={handleAddQualification}
-            onBack={() => setActiveTab('settings')}
+            onBack={() => {
+              setSelectedQualification(null);
+              setActiveTab('settings');
+            }}
           />
         )}
         {activeTab === 'detail' && selectedEmployee && <EmployeeDetail employee={selectedEmployee} onEdit={handleEmployeeEdit} />}
@@ -471,7 +474,10 @@ const App = () => {
           <EmployeeDetail 
             employee={selectedEmployee} 
             onEdit={handleEmployeeEdit} 
-            onBack={() => setActiveTab('employees')}
+            onBack={() => {
+              setSelectedEmployee(null);
+              setActiveTab('employees');
+            }}
           />
         )}
         {activeTab === 'edit' && selectedEmployee && (
@@ -491,7 +497,10 @@ const App = () => {
           <CompanyDetail 
             company={selectedCompany} 
             onEdit={handleCompanyEdit}
-            onBack={() => setActiveTab('companies')}
+            onBack={() => {
+              setSelectedCompany(null);
+              setActiveTab('companies');
+            }}
           />
         )}
         {activeTab === 'company-edit' && (
@@ -522,7 +531,10 @@ const App = () => {
             onCategoryEdit={handleBusinessCategoryEdit}
             onCategoryDelete={handleBusinessCategoryDelete}
             onAddCategory={handleAddBusinessCategory}
-            onBack={() => setActiveTab('settings')}
+            onBack={() => {
+              setSelectedBusinessCategory(null);
+              setActiveTab('settings');
+            }}
           />
         )}
         {activeTab === 'business-category-edit' && (
@@ -538,7 +550,10 @@ const App = () => {
             onDepartmentEdit={handleDepartmentEdit}
             onDepartmentDelete={handleDepartmentDelete}
             onAddDepartment={handleAddDepartment}
-            onBack={() => setActiveTab('settings')}
+            onBack={() => {
+              setSelectedDepartment(null);
+              setActiveTab('settings');
+            }}
           />
         )}
         {activeTab === 'department-edit' && (
