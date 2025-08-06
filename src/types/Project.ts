@@ -36,3 +36,5 @@ export interface LeaveMember {
   leaveEndDate?: string;
   reason: string;
 }
+
+export const __esModule = true;
