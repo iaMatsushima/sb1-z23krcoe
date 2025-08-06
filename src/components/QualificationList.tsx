@@ -26,20 +26,6 @@ export const QualificationList: React.FC<QualificationListProps> = ({
     return matchesSearch && matchesCategory;
   });
 
-  // カテゴリ別にグループ化
-  const groupedQualifications = filteredQualifications.reduce((acc, qualification) => {
-    const key = `${qualification.category}-${qualification.subcategory}`;
-    if (!acc[key]) {
-      acc[key] = {
-        category: qualification.category,
-        subcategory: qualification.subcategory,
-        qualifications: []
-      };
-    }
-    acc[key].qualifications.push(qualification);
-    return acc;
-  }, {} as Record<string, { category: string; subcategory: string; qualifications: Qualification[] }>);
-
   // 統計計算
   const currentStats = qualificationStats[qualificationStats.length - 1];
   const previousYearStats = qualificationStats[qualificationStats.length - 13];
@@ -51,6 +37,30 @@ export const QualificationList: React.FC<QualificationListProps> = ({
 
   // カテゴリ一覧を取得
   const categories = Array.from(new Set(qualifications.map(q => q.category)));
+
+  // エクスポート機能
+  const handleExport = () => {
+    const csvContent = [
+      ['カテゴリ', 'サブカテゴリ', '資格名', 'ポイント', '現在取得数'].join(','),
+      ...filteredQualifications.map(q => [
+        q.category,
+        q.subcategory,
+        q.name,
+        q.points,
+        q.currentCount
+      ].join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `資格一覧_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div className="space-y-6">
@@ -84,7 +94,10 @@ export const QualificationList: React.FC<QualificationListProps> = ({
             <Plus className="h-4 w-4" />
             新規登録
           </button>
-          <button className="bg-slate-600 text-white px-4 py-2 rounded-md hover:bg-slate-700 transition-colors flex items-center gap-2">
+          <button 
+            onClick={handleExport}
+            className="bg-slate-600 text-white px-4 py-2 rounded-md hover:bg-slate-700 transition-colors flex items-center gap-2"
+          >
             <Download className="h-4 w-4" />
             エクスポート
           </button>
@@ -166,67 +179,76 @@ export const QualificationList: React.FC<QualificationListProps> = ({
         </div>
       </div>
 
-      {/* 資格一覧 */}
-      <div className="space-y-6">
-        {Object.entries(groupedQualifications).map(([key, group]) => (
-          <div key={key} className="bg-white rounded-lg shadow-sm overflow-hidden">
-            <div className="bg-slate-50 px-6 py-3 border-b border-slate-200">
-              <h4 className="text-lg font-semibold text-slate-800">
-                {group.category} - {group.subcategory}
-              </h4>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-slate-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">資格名</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">ポイント</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">現在取得数</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">操作</th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-slate-200">
-                  {group.qualifications.map((qualification) => (
-                    <tr key={qualification.id} className="hover:bg-slate-50">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <div className="flex-shrink-0 h-10 w-10">
-                            <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
-                              <Award className="h-5 w-5 text-blue-600" />
-                            </div>
-                          </div>
-                          <div className="ml-4">
-                            <div className="text-sm font-medium text-slate-900">{qualification.name}</div>
-                          </div>
+      {/* 資格一覧テーブル */}
+      <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-slate-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">カテゴリ</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">サブカテゴリ</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">資格名</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">ポイント</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">現在取得数</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">操作</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-slate-200">
+              {filteredQualifications.map((qualification) => (
+                <tr key={qualification.id} className="hover:bg-slate-50">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
+                    <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                      {qualification.category}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-900">
+                    <span className="inline-flex px-2 py-1 text-xs font-medium rounded bg-slate-100 text-slate-700">
+                      {qualification.subcategory}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0 h-8 w-8">
+                        <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
+                          <Award className="h-4 w-4 text-blue-600" />
                         </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">
-                          {qualification.points}pt
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                          {qualification.currentCount}件
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <div className="flex items-center gap-2">
-                          <button 
-                            onClick={() => onQualificationEdit(qualification)}
-                            className="text-slate-600 hover:text-slate-800"
-                          >
-                            <Edit className="h-4 w-4" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                      </div>
+                      <div className="ml-3">
+                        <div className="text-sm font-medium text-slate-900">{qualification.name}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">
+                      {qualification.points}pt
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                      {qualification.currentCount}件
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <div className="flex items-center gap-2">
+                      <button 
+                        onClick={() => onQualificationEdit(qualification)}
+                        className="text-slate-600 hover:text-slate-800"
+                      >
+                        <Edit className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {filteredQualifications.length === 0 && (
+            <div className="text-center py-8">
+              <Award className="h-12 w-12 text-slate-300 mx-auto mb-4" />
+              <p className="text-slate-500">該当する資格がありません</p>
             </div>
-          </div>
-        ))}
+          )}
+        </div>
       </div>
     </div>
   );
