@@ -169,9 +169,9 @@ export const EmployeeEdit: React.FC<EmployeeEditProps> = ({ employee, onSave, on
                       onChange={(e) => handleInputChange('department', e.target.value)}
                       className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
-                      <option value="管理部">管理部</option>
-                      <option value="営業部">営業部</option>
-                      <option value="技術部">技術部</option>
+                      {mockDepartments.map(dept => (
+                        <option key={dept.id} value={dept.name}>{dept.name}</option>
+                      ))}
                     </select>
                   </div>
                   <div>
