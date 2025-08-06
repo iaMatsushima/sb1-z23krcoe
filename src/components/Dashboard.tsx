@@ -60,12 +60,6 @@ export const Dashboard: React.FC<DashboardProps> = ({ userRole }) => {
 
   const maxValue = Math.max(...monthlyData.map(d => d.fullTime + d.contract));
 
-  // 先月比計算
-  const currentMonth = monthlyData[monthlyData.length - 1];
-  const previousMonth = monthlyData[monthlyData.length - 2];
-  const monthOverMonthChange = currentMonth.fullTime + currentMonth.contract - (previousMonth.fullTime + previousMonth.contract);
-  const monthOverMonthPercent = ((monthOverMonthChange / (previousMonth.fullTime + previousMonth.contract)) * 100).toFixed(1);
-
   // 資格保有数（モックデータ）
   const totalQualifications = 235;
 
@@ -139,10 +133,6 @@ export const Dashboard: React.FC<DashboardProps> = ({ userRole }) => {
             <div>
               <p className="text-sm text-slate-600">総社員数</p>
               <p className="text-2xl font-bold text-slate-800">101名</p>
-              <p className="text-xs text-slate-500 mt-1">
-                先月比: {monthOverMonthChange >= 0 ? '+' : ''}{monthOverMonthChange}名 
-                ({monthOverMonthPercent >= 0 ? '+' : ''}{monthOverMonthPercent}%)
-              </p>
             </div>
             <Users className="h-8 w-8 text-blue-500" />
           </div>
