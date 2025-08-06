@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { Edit, Building2, FileText, Users, Calendar, CheckCircle, XCircle, User, Mail, Phone, Shield, Award, MapPin, UserPlus, Trash2 } from 'lucide-react';
+import { Edit, Building2, FileText, Users, Calendar, CheckCircle, XCircle, User, Mail, Phone, Shield, Award, MapPin, UserPlus, Trash2, ArrowLeft } from 'lucide-react';
 import { Employee } from '../types/Employee';
 
 interface EmployeeDetailProps {
   employee: Employee;
   onEdit: (employee: Employee) => void;
+  onBack: () => void;
 }
 
-export const EmployeeDetail: React.FC<EmployeeDetailProps> = ({ employee, onEdit }) => {
+export const EmployeeDetail: React.FC<EmployeeDetailProps> = ({ employee, onEdit, onBack }) => {
   const [activeTab, setActiveTab] = useState<'basic' | 'dependents'>('basic');
 
   const calculateAge = (birthDate: string) => {
@@ -26,6 +27,13 @@ export const EmployeeDetail: React.FC<EmployeeDetailProps> = ({ employee, onEdit
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold text-slate-800">社員詳細情報</h2>
         <div className="flex items-center gap-3">
+          <button 
+            onClick={onBack}
+            className="bg-slate-600 text-white px-4 py-2 rounded-md hover:bg-slate-700 transition-colors flex items-center gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            戻る
+          </button>
           <button 
             onClick={() => onEdit(employee)}
             className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2"

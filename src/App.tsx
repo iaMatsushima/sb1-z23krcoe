@@ -463,9 +463,17 @@ const App = () => {
             qualificationStats={mockQualificationStats}
             onQualificationEdit={handleQualificationEdit}
             onAddQualification={handleAddQualification}
+            onBack={() => setActiveTab('settings')}
           />
         )}
         {activeTab === 'detail' && selectedEmployee && <EmployeeDetail employee={selectedEmployee} onEdit={handleEmployeeEdit} />}
+        {activeTab === 'detail' && selectedEmployee && (
+          <EmployeeDetail 
+            employee={selectedEmployee} 
+            onEdit={handleEmployeeEdit} 
+            onBack={() => setActiveTab('employees')}
+          />
+        )}
         {activeTab === 'edit' && selectedEmployee && (
           <EmployeeEdit 
             employee={selectedEmployee || undefined}
@@ -482,7 +490,8 @@ const App = () => {
         {activeTab === 'company-detail' && selectedCompany && (
           <CompanyDetail 
             company={selectedCompany} 
-            onEdit={handleCompanyEdit} 
+            onEdit={handleCompanyEdit}
+            onBack={() => setActiveTab('companies')}
           />
         )}
         {activeTab === 'company-edit' && (
@@ -513,6 +522,7 @@ const App = () => {
             onCategoryEdit={handleBusinessCategoryEdit}
             onCategoryDelete={handleBusinessCategoryDelete}
             onAddCategory={handleAddBusinessCategory}
+            onBack={() => setActiveTab('settings')}
           />
         )}
         {activeTab === 'business-category-edit' && (
@@ -528,6 +538,7 @@ const App = () => {
             onDepartmentEdit={handleDepartmentEdit}
             onDepartmentDelete={handleDepartmentDelete}
             onAddDepartment={handleAddDepartment}
+            onBack={() => setActiveTab('settings')}
           />
         )}
         {activeTab === 'department-edit' && (

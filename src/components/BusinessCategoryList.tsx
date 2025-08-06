@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Plus, Edit, Trash2, Building2 } from 'lucide-react';
+import { Search, Plus, Edit, Trash2, Building2, ArrowLeft } from 'lucide-react';
 import { BusinessCategory } from '../types/Settings';
 
 interface BusinessCategoryListProps {
@@ -7,13 +7,15 @@ interface BusinessCategoryListProps {
   onCategoryEdit: (category: BusinessCategory) => void;
   onCategoryDelete: (categoryId: string) => void;
   onAddCategory: () => void;
+  onBack: () => void;
 }
 
 export const BusinessCategoryList: React.FC<BusinessCategoryListProps> = ({
   categories,
   onCategoryEdit,
   onCategoryDelete,
-  onAddCategory
+  onAddCategory,
+  onBack
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -27,6 +29,13 @@ export const BusinessCategoryList: React.FC<BusinessCategoryListProps> = ({
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h3 className="text-lg font-semibold text-slate-800">事業分類管理</h3>
         <div className="flex items-center gap-3">
+          <button 
+            onClick={onBack}
+            className="bg-slate-600 text-white px-4 py-2 rounded-md hover:bg-slate-700 transition-colors flex items-center gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            戻る
+          </button>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
             <input

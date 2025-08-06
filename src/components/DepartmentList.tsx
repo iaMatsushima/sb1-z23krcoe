@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Plus, Edit, Trash2, Users } from 'lucide-react';
+import { Search, Plus, Edit, Trash2, Users, ArrowLeft } from 'lucide-react';
 import { Department } from '../types/Settings';
 
 interface DepartmentListProps {
@@ -7,13 +7,15 @@ interface DepartmentListProps {
   onDepartmentEdit: (department: Department) => void;
   onDepartmentDelete: (departmentId: string) => void;
   onAddDepartment: () => void;
+  onBack: () => void;
 }
 
 export const DepartmentList: React.FC<DepartmentListProps> = ({
   departments,
   onDepartmentEdit,
   onDepartmentDelete,
-  onAddDepartment
+  onAddDepartment,
+  onBack
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -27,6 +29,13 @@ export const DepartmentList: React.FC<DepartmentListProps> = ({
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h3 className="text-lg font-semibold text-slate-800">部署管理</h3>
         <div className="flex items-center gap-3">
+          <button 
+            onClick={onBack}
+            className="bg-slate-600 text-white px-4 py-2 rounded-md hover:bg-slate-700 transition-colors flex items-center gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            戻る
+          </button>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
             <input

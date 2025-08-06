@@ -1,13 +1,14 @@
 import React from 'react';
-import { Edit, Building2, FileText, Users, Calendar, CheckCircle, XCircle } from 'lucide-react';
+import { Edit, Building2, FileText, Users, Calendar, CheckCircle, XCircle, ArrowLeft } from 'lucide-react';
 import { Company } from '../types/Company';
 
 interface CompanyDetailProps {
   company: Company;
   onEdit: (company: Company) => void;
+  onBack: () => void;
 }
 
-export const CompanyDetail: React.FC<CompanyDetailProps> = ({ company, onEdit }) => {
+export const CompanyDetail: React.FC<CompanyDetailProps> = ({ company, onEdit, onBack }) => {
   const getContractTypeColor = (type: string) => {
     switch (type) {
       case 'SES': return 'bg-blue-100 text-blue-800';
@@ -33,6 +34,13 @@ export const CompanyDetail: React.FC<CompanyDetailProps> = ({ company, onEdit })
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold text-slate-800">企業詳細情報</h2>
         <div className="flex items-center gap-3">
+          <button 
+            onClick={onBack}
+            className="bg-slate-600 text-white px-4 py-2 rounded-md hover:bg-slate-700 transition-colors flex items-center gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            戻る
+          </button>
           <button 
             onClick={() => onEdit(company)}
             className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2"

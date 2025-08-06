@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Plus, Download, Edit, Eye, Award, TrendingUp, BarChart3 } from 'lucide-react';
+import { Search, Plus, Download, Edit, Eye, Award, TrendingUp, BarChart3, ArrowLeft } from 'lucide-react';
 import { Qualification, QualificationStats } from '../types/Qualification';
 
 interface QualificationListProps {
@@ -7,13 +7,15 @@ interface QualificationListProps {
   qualificationStats: QualificationStats[];
   onQualificationEdit: (qualification: Qualification) => void;
   onAddQualification: () => void;
+  onBack: () => void;
 }
 
 export const QualificationList: React.FC<QualificationListProps> = ({
   qualifications,
   qualificationStats,
   onQualificationEdit,
-  onAddQualification
+  onAddQualification,
+  onBack
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState<string>('all');
@@ -67,6 +69,13 @@ export const QualificationList: React.FC<QualificationListProps> = ({
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h2 className="text-xl font-semibold text-slate-800">資格一覧</h2>
         <div className="flex items-center gap-3">
+          <button 
+            onClick={onBack}
+            className="bg-slate-600 text-white px-4 py-2 rounded-md hover:bg-slate-700 transition-colors flex items-center gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            戻る
+          </button>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
             <input
