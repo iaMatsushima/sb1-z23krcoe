@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Building2, Calendar, User, FileText, Yen, Clock } from 'lucide-react';
+import { Building2, Calendar, User, FileText, Pen as Yen, Clock } from 'lucide-react';
 import { ProjectAssignment } from '../types/Project';
 
 interface ProjectEditProps {
