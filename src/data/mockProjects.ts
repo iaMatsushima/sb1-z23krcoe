@@ -1,4 +1,4 @@
-export { ProjectAssignment, StandbyMember, LeaveMember } from '../types/Project';
+import { ProjectAssignment, StandbyMember, LeaveMember } from '../types/Project';
 
 export const mockProjectAssignments: ProjectAssignment[] = [
   {
