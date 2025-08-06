@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
-import { Calendar, Users, UserX, Clock, Building2, Pen as Yen, FileText, Mail, Phone, AlertTriangle } from 'lucide-react';
+import { Calendar, Users, UserX, Clock, Building2, Pen as Yen, FileText, Mail, Phone, AlertTriangle, Plus, Edit, Eye } from 'lucide-react';
 import { ProjectAssignment, StandbyMember, LeaveMember } from '../types/Project';
 
 interface ProjectManagementProps {
   assignments: ProjectAssignment[];
   standbyMembers: StandbyMember[];
   leaveMembers: LeaveMember[];
+  onAddProject: () => void;
+  onProjectEdit: (project: ProjectAssignment) => void;
 }
 
 export const ProjectManagement: React.FC<ProjectManagementProps> = ({
   assignments,
   standbyMembers,
   leaveMembers
+  onAddProject,
+  onProjectEdit
 }) => {
   const [selectedMonth, setSelectedMonth] = useState('2024-12');
   const [activeTab, setActiveTab] = useState<'assignments' | 'standby' | 'leave'>('assignments');
@@ -60,6 +64,7 @@ export const ProjectManagement: React.FC<ProjectManagementProps> = ({
               <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">派遣抵触日</th>
               <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">支払いサイト</th>
               <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">勤務表入手経路</th>
+              <th className="px-4 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">操作</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-slate-200">
@@ -91,6 +96,16 @@ export const ProjectManagement: React.FC<ProjectManagementProps> = ({
                 <td className="px-4 py-4 whitespace-nowrap text-sm text-slate-900">{assignment.dispatchConflictDate}</td>
                 <td className="px-4 py-4 whitespace-nowrap text-sm text-slate-900">{assignment.paymentSite}</td>
                 <td className="px-4 py-4 whitespace-nowrap text-sm text-slate-900">{assignment.timesheetSource}</td>
+                <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                  <div className="flex items-center gap-2">
+                    <button 
+                      onClick={() => onProjectEdit(assignment)}
+                      className="text-slate-600 hover:text-slate-800"
+                    >
+                      <Edit className="h-4 w-4" />
+                    </button>
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -110,6 +125,13 @@ export const ProjectManagement: React.FC<ProjectManagementProps> = ({
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h2 className="text-xl font-semibold text-slate-800">案件情報管理</h2>
         <div className="flex items-center gap-3">
+          <button 
+            onClick={onAddProject}
+            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2"
+          >
+            <Plus className="h-4 w-4" />
+            新規案件登録
+          </button>
           <div className="flex items-center gap-2">
             <Calendar className="h-4 w-4 text-slate-400" />
             <select

@@ -5,6 +5,7 @@ import { CompanyList } from './components/CompanyList';
 import { CompanyDetail } from './components/CompanyDetail';
 import { CompanyEdit } from './components/CompanyEdit';
 import { ProjectManagement } from './components/ProjectManagement';
+import { ProjectEdit } from './components/ProjectEdit';
 import { EmployeeList } from './components/EmployeeList';
 import { EmployeeDetail } from './components/EmployeeDetail';
 import { EmployeeEdit } from './components/EmployeeEdit';
@@ -12,7 +13,7 @@ import { Company } from './types/Company';
 import { Employee } from './types/Employee';
 import { mockCompanies } from './data/mockCompanies';
 import { mockEmployees } from './data/mockEmployees';
-import { mockProjectAssignments, mockStandbyMembers, mockLeaveMembers } from './data/mockProjects';
+import { mockProjectAssignments, mockStandbyMembers, mockLeaveMembers, ProjectAssignment } from './data/mockProjects';
 
 type UserRole = 'admin' | 'sales' | 'tech_leader' | 'tech_general';
 
@@ -88,11 +89,13 @@ const LoginScreen = ({ onLogin }: { onLogin: (role: UserRole) => void }) => (
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState<UserRole>('admin');
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'employees' | 'companies' | 'projects' | 'detail' | 'edit' | 'company-detail' | 'company-edit'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'employees' | 'companies' | 'projects' | 'detail' | 'edit' | 'company-detail' | 'company-edit' | 'project-edit'>('dashboard');
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
+  const [selectedProject, setSelectedProject] = useState<ProjectAssignment | null>(null);
   const [employees, setEmployees] = useState<Employee[]>(mockEmployees);
   const [companies, setCompanies] = useState<Company[]>(mockCompanies);
+  const [projectAssignments, setProjectAssignments] = useState<ProjectAssignment[]>(mockProjectAssignments);
 
   const handleLogin = (role: UserRole) => {
     setUserRole(role);
@@ -104,6 +107,7 @@ const App = () => {
     setActiveTab('dashboard');
     setSelectedEmployee(null);
     setSelectedCompany(null);
+    setSelectedProject(null);
   };
 
   const handleEmployeeDetail = (employee: Employee) => {
@@ -159,6 +163,30 @@ const App = () => {
     }
   };
 
+  const handleAddProject = () => {
+    setSelectedProject(null);
+    setActiveTab('project-edit');
+  };
+
+  const handleProjectEdit = (project: ProjectAssignment) => {
+    setSelectedProject(project);
+    setActiveTab('project-edit');
+  };
+
+  const handleProjectSave = (project: ProjectAssignment) => {
+    if (selectedProject) {
+      setProjectAssignments(prev => prev.map(p => p.id === project.id ? project : p));
+    } else {
+      setProjectAssignments(prev => [...prev, project]);
+    }
+    setSelectedProject(project);
+    setActiveTab('projects');
+  };
+
+  const handleProjectEditCancel = () => {
+    setActiveTab('projects');
+  };
+
   if (!isLoggedIn) {
     return <LoginScreen onLogin={handleLogin} />;
   }
@@ -210,7 +238,7 @@ const App = () => {
               <button
                 onClick={() => setActiveTab('projects')}
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  activeTab === 'projects'
+                  activeTab === 'projects' || activeTab === 'project-edit'
                     ? 'bg-slate-100 text-slate-900'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
@@ -243,9 +271,11 @@ const App = () => {
         )}
         {activeTab === 'projects' && (
           <ProjectManagement 
-            assignments={mockProjectAssignments}
+            assignments={projectAssignments}
             standbyMembers={mockStandbyMembers}
             leaveMembers={mockLeaveMembers}
+            onAddProject={handleAddProject}
+            onProjectEdit={handleProjectEdit}
           />
         )}
         {activeTab === 'detail' && selectedEmployee && <EmployeeDetail employee={selectedEmployee} onEdit={handleEmployeeEdit} />}
@@ -269,6 +299,13 @@ const App = () => {
             onCancel={handleCompanyEditCancel} 
           />
         )}
+       {activeTab === 'project-edit' && (
+         <ProjectEdit 
+           project={selectedProject || undefined}
+           onSave={handleProjectSave} 
+           onCancel={handleProjectEditCancel} 
+         />
+       )}
       </main>
     </div>
   );
