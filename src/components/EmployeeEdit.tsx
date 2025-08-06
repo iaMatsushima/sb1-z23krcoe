@@ -199,11 +199,142 @@ export const EmployeeEdit: React.FC<EmployeeEditProps> = ({ employee, onSave, on
                       />
                     </div>
                     <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">関東ITS番号</label>
+                      <input
+                        type="text"
+                        value={formData.kantoItsNumber}
+                        onChange={(e) => handleInputChange('kantoItsNumber', e.target.value)}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">被扶養者保険証有無</label>
+                      <select
+                        value={formData.dependentInsuranceCard}
+                        onChange={(e) => handleInputChange('dependentInsuranceCard', e.target.value)}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="有">有</option>
+                        <option value="無">無</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">フリガナ</label>
+                      <input
+                        type="text"
+                        value={formData.nameKana}
+                        onChange={(e) => handleInputChange('nameKana', e.target.value)}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">性別</label>
+                      <select
+                        value={formData.gender}
+                        onChange={(e) => handleInputChange('gender', e.target.value)}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="男性">男性</option>
+                        <option value="女性">女性</option>
+                        <option value="その他">その他</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">生年月日</label>
+                      <input
+                        type="date"
+                        value={formData.birthDate}
+                        onChange={(e) => handleInputChange('birthDate', e.target.value)}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">年齢</label>
                       <input
                         type="number"
                         value={formData.age}
                         onChange={(e) => handleInputChange('age', parseInt(e.target.value))}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">変更前住所</label>
+                      <input
+                        type="text"
+                        value={formData.previousAddress}
+                        onChange={(e) => handleInputChange('previousAddress', e.target.value)}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">郵便番号</label>
+                      <input
+                        type="text"
+                        value={formData.postalCode}
+                        onChange={(e) => handleInputChange('postalCode', e.target.value)}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">住所1</label>
+                      <input
+                        type="text"
+                        value={formData.address1}
+                        onChange={(e) => handleInputChange('address1', e.target.value)}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">住所2</label>
+                      <input
+                        type="text"
+                        value={formData.address2}
+                        onChange={(e) => handleInputChange('address2', e.target.value)}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">入社日</label>
+                      <input
+                        type="date"
+                        value={formData.joinDate}
+                        onChange={(e) => handleInputChange('joinDate', e.target.value)}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">退職日</label>
+                      <input
+                        type="date"
+                        value={formData.leaveDate || ''}
+                        onChange={(e) => handleInputChange('leaveDate', e.target.value)}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">退職月の末日</label>
+                      <input
+                        type="date"
+                        value={formData.leaveEndOfMonth || ''}
+                        onChange={(e) => handleInputChange('leaveEndOfMonth', e.target.value)}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">社会保険加入日</label>
+                      <input
+                        type="date"
+                        value={formData.socialInsuranceJoinDate}
+                        onChange={(e) => handleInputChange('socialInsuranceJoinDate', e.target.value)}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">初回有休付与日</label>
+                      <input
+                        type="date"
+                        value={formData.firstPaidLeaveDate}
+                        onChange={(e) => handleInputChange('firstPaidLeaveDate', e.target.value)}
                         className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
@@ -219,27 +350,99 @@ export const EmployeeEdit: React.FC<EmployeeEditProps> = ({ employee, onSave, on
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">学歴</label>
-                      <select
-                        value={formData.education}
-                        onChange={(e) => handleInputChange('education', e.target.value)}
+                      <label className="block text-sm font-medium text-slate-700 mb-2">正社員転換日</label>
+                      <input
+                        type="date"
+                        value={formData.fullTimeConversionDate || ''}
+                        onChange={(e) => handleInputChange('fullTimeConversionDate', e.target.value)}
                         className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      >
-                        <option value="大学院卒">大学院卒</option>
-                        <option value="大学卒">大学卒</option>
-                        <option value="大卒以外">大卒以外</option>
-                      </select>
+                      />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">職種</label>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">勤続年数</label>
+                      <input
+                        type="number"
+                        value={formData.yearsOfService}
+                        onChange={(e) => handleInputChange('yearsOfService', parseInt(e.target.value))}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">勤続月数</label>
+                      <input
+                        type="number"
+                        value={formData.monthsOfService}
+                        onChange={(e) => handleInputChange('monthsOfService', parseInt(e.target.value))}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">雇用保険被保険者番号</label>
+                      <input
+                        type="text"
+                        value={formData.employmentInsuranceNumber}
+                        onChange={(e) => handleInputChange('employmentInsuranceNumber', e.target.value)}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">基礎年金番号</label>
+                      <input
+                        type="text"
+                        value={formData.basicPensionNumber}
+                        onChange={(e) => handleInputChange('basicPensionNumber', e.target.value)}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">標準報酬月額（健保）</label>
+                      <input
+                        type="number"
+                        value={formData.standardMonthlyRemunerationHealth}
+                        onChange={(e) => handleInputChange('standardMonthlyRemunerationHealth', parseInt(e.target.value))}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">標準報酬月額（厚年）</label>
+                      <input
+                        type="number"
+                        value={formData.standardMonthlyRemunerationPension}
+                        onChange={(e) => handleInputChange('standardMonthlyRemunerationPension', parseInt(e.target.value))}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">種別</label>
+                      <input
+                        type="text"
+                        value={formData.type}
+                        onChange={(e) => handleInputChange('type', e.target.value)}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">役職カテゴリ</label>
                       <select
-                        value={formData.jobCategory}
-                        onChange={(e) => handleInputChange('jobCategory', e.target.value)}
+                        value={formData.roleCategory}
+                        onChange={(e) => handleInputChange('roleCategory', e.target.value)}
                         className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       >
                         <option value="管理職">管理職</option>
                         <option value="営業職">営業職</option>
                         <option value="技術職">技術職</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">最終学歴</label>
+                      <select
+                        value={formData.finalEducation}
+                        onChange={(e) => handleInputChange('finalEducation', e.target.value)}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="大学院卒">大学院卒</option>
+                        <option value="大学卒">大学卒</option>
+                        <option value="大卒以外">大卒以外</option>
                       </select>
                     </div>
                     <div>
@@ -261,29 +464,11 @@ export const EmployeeEdit: React.FC<EmployeeEditProps> = ({ employee, onSave, on
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">住所</label>
-                      <input
-                        type="text"
-                        value={formData.address}
-                        onChange={(e) => handleInputChange('address', e.target.value)}
-                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-                    <div>
                       <label className="block text-sm font-medium text-slate-700 mb-2">最寄り駅</label>
                       <input
                         type="text"
                         value={formData.nearestStation}
                         onChange={(e) => handleInputChange('nearestStation', e.target.value)}
-                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">入社日</label>
-                      <input
-                        type="date"
-                        value={formData.joinDate}
-                        onChange={(e) => handleInputChange('joinDate', e.target.value)}
                         className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>

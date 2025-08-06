@@ -96,10 +96,68 @@ export const EmployeeDetail: React.FC<EmployeeDetailProps> = ({ employee, onEdit
                     </div>
                   </div>
                   <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">関東ITS番号</label>
+                    <div className="flex items-center gap-2">
+                      <Shield className="h-4 w-4 text-slate-400" />
+                      <span className="text-slate-900">{employee.kantoItsNumber}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">被扶養者保険証有無</label>
+                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                      employee.dependentInsuranceCard === '有' 
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-red-100 text-red-800'
+                    }`}>
+                      {employee.dependentInsuranceCard}
+                    </span>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">フリガナ</label>
+                    <div className="flex items-center gap-2">
+                      <User className="h-4 w-4 text-slate-400" />
+                      <span className="text-slate-900">{employee.nameKana}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">性別</label>
+                    <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                      {employee.gender}
+                    </span>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">生年月日</label>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4 text-slate-400" />
+                      <span className="text-slate-900">{employee.birthDate}</span>
+                    </div>
+                  </div>
+                  <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">年齢</label>
                     <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4 text-slate-400" />
                       <span className="text-slate-900">{employee.age}歳</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">郵便番号</label>
+                    <div className="flex items-center gap-2">
+                      <MapPin className="h-4 w-4 text-slate-400" />
+                      <span className="text-slate-900">{employee.postalCode}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">住所1</label>
+                    <div className="flex items-center gap-2">
+                      <MapPin className="h-4 w-4 text-slate-400" />
+                      <span className="text-slate-900">{employee.address1}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">住所2</label>
+                    <div className="flex items-center gap-2">
+                      <MapPin className="h-4 w-4 text-slate-400" />
+                      <span className="text-slate-900">{employee.address2}</span>
                     </div>
                   </div>
                   <div>
@@ -109,16 +167,44 @@ export const EmployeeDetail: React.FC<EmployeeDetailProps> = ({ employee, onEdit
                     </span>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">学歴</label>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">最終学歴</label>
                     <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">
-                      {employee.education}
+                      {employee.finalEducation}
                     </span>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">職種</label>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">役職カテゴリ</label>
                     <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-orange-100 text-orange-800">
-                      {employee.jobCategory}
+                      {employee.roleCategory}
                     </span>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">勤続年数</label>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4 text-slate-400" />
+                      <span className="text-slate-900">{employee.yearsOfService}年{employee.monthsOfService}ヶ月</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">社会保険加入日</label>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4 text-slate-400" />
+                      <span className="text-slate-900">{employee.socialInsuranceJoinDate}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">雇用保険被保険者番号</label>
+                    <div className="flex items-center gap-2">
+                      <Shield className="h-4 w-4 text-slate-400" />
+                      <span className="text-slate-900">{employee.employmentInsuranceNumber}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">基礎年金番号</label>
+                    <div className="flex items-center gap-2">
+                      <Shield className="h-4 w-4 text-slate-400" />
+                      <span className="text-slate-900">{employee.basicPensionNumber}</span>
+                    </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">メールアドレス</label>
@@ -132,13 +218,6 @@ export const EmployeeDetail: React.FC<EmployeeDetailProps> = ({ employee, onEdit
                     <div className="flex items-center gap-2">
                       <Phone className="h-4 w-4 text-slate-400" />
                       <span className="text-slate-900">{employee.phone}</span>
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">住所</label>
-                    <div className="flex items-center gap-2">
-                      <MapPin className="h-4 w-4 text-slate-400" />
-                      <span className="text-slate-900">{employee.address}</span>
                     </div>
                   </div>
                   <div>
