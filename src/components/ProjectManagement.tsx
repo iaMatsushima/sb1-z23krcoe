@@ -13,7 +13,7 @@ interface ProjectManagementProps {
 export const ProjectManagement: React.FC<ProjectManagementProps> = ({
   assignments,
   standbyMembers,
-  leaveMembers
+  leaveMembers,
   onAddProject,
   onProjectEdit
 }) => {
