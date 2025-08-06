@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users, Plus, Award, BarChart3, TrendingUp, GraduationCap, Briefcase } from 'lucide-react';
+import { Users, Plus, Award, BarChart3, TrendingUp, GraduationCap, Briefcase, Download } from 'lucide-react';
 
 interface DashboardProps {
   userRole: string;
@@ -60,6 +60,77 @@ export const Dashboard: React.FC<DashboardProps> = ({ userRole }) => {
 
   const maxValue = Math.max(...monthlyData.map(d => d.fullTime + d.contract));
 
+  // 先月比計算
+  const currentMonth = monthlyData[monthlyData.length - 1];
+  const previousMonth = monthlyData[monthlyData.length - 2];
+  const monthOverMonthChange = currentMonth.fullTime + currentMonth.contract - (previousMonth.fullTime + previousMonth.contract);
+  const monthOverMonthPercent = ((monthOverMonthChange / (previousMonth.fullTime + previousMonth.contract)) * 100).toFixed(1);
+
+  // 資格保有数（モックデータ）
+  const totalQualifications = 235;
+
+  // エクスポート機能
+  const exportFullTimeStats = () => {
+    const csvContent = [
+      ['項目', ...months].join(','),
+      ['学歴', '', '', '', '', '', '', '', '', '', '', '', ''],
+      ['大学院卒', ...fullTimeDetailData.education.graduate].join(','),
+      ['大学卒', ...fullTimeDetailData.education.university].join(','),
+      ['大卒以外', ...fullTimeDetailData.education.other].join(','),
+      ['合計', ...fullTimeDetailData.totalCount].join(','),
+      ['', '', '', '', '', '', '', '', '', '', '', '', ''],
+      ['職種', '', '', '', '', '', '', '', '', '', '', '', ''],
+      ['管理職', ...fullTimeDetailData.position.management].join(','),
+      ['営業職', ...fullTimeDetailData.position.sales].join(','),
+      ['技術職', ...fullTimeDetailData.position.technical].join(','),
+      ['合計', ...fullTimeDetailData.totalCount].join(','),
+      ['', '', '', '', '', '', '', '', '', '', '', '', ''],
+      ['入社数', ...fullTimeDetailData.joinCount].join(','),
+      ['退社数', ...fullTimeDetailData.leaveCount].join(','),
+      ['在籍数', ...fullTimeDetailData.totalCount].join(',')
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `正社員詳細統計_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const exportContractStats = () => {
+    const csvContent = [
+      ['項目', ...months].join(','),
+      ['学歴', '', '', '', '', '', '', '', '', '', '', '', ''],
+      ['大学院卒', ...contractDetailData.education.graduate].join(','),
+      ['大学卒', ...contractDetailData.education.university].join(','),
+      ['大卒以外', ...contractDetailData.education.other].join(','),
+      ['合計', ...contractDetailData.totalCount].join(','),
+      ['', '', '', '', '', '', '', '', '', '', '', '', ''],
+      ['職種', '', '', '', '', '', '', '', '', '', '', '', ''],
+      ['管理職', ...contractDetailData.position.management].join(','),
+      ['営業職', ...contractDetailData.position.sales].join(','),
+      ['技術職', ...contractDetailData.position.technical].join(','),
+      ['合計', ...contractDetailData.totalCount].join(','),
+      ['', '', '', '', '', '', '', '', '', '', '', '', ''],
+      ['入社数', ...contractDetailData.joinCount].join(','),
+      ['退社数', ...contractDetailData.leaveCount].join(','),
+      ['在籍数', ...contractDetailData.totalCount].join(',')
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `契約社員詳細統計_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -68,6 +139,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ userRole }) => {
             <div>
               <p className="text-sm text-slate-600">総社員数</p>
               <p className="text-2xl font-bold text-slate-800">101名</p>
+              <p className="text-xs text-slate-500 mt-1">
+                先月比: {monthOverMonthChange >= 0 ? '+' : ''}{monthOverMonthChange}名 
+                ({monthOverMonthPercent >= 0 ? '+' : ''}{monthOverMonthPercent}%)
+              </p>
             </div>
             <Users className="h-8 w-8 text-blue-500" />
           </div>
@@ -86,8 +161,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ userRole }) => {
         <div className="bg-white p-6 rounded-lg shadow-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-slate-600">資格期限切れ</p>
-              <p className="text-2xl font-bold text-slate-800">5件</p>
+              <p className="text-sm text-slate-600">資格保有数</p>
+              <p className="text-2xl font-bold text-slate-800">{totalQualifications}件</p>
             </div>
             <Award className="h-8 w-8 text-orange-500" />
           </div>
@@ -166,9 +241,18 @@ export const Dashboard: React.FC<DashboardProps> = ({ userRole }) => {
 
       {/* 正社員詳細統計 */}
       <div className="bg-white p-6 rounded-lg shadow-sm">
-        <div className="flex items-center gap-2 mb-6">
-          <Users className="h-5 w-5 text-blue-600" />
-          <h3 className="text-lg font-semibold text-slate-800">正社員 詳細統計</h3>
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-2">
+            <Users className="h-5 w-5 text-blue-600" />
+            <h3 className="text-lg font-semibold text-slate-800">正社員 詳細統計</h3>
+          </div>
+          <button
+            onClick={exportFullTimeStats}
+            className="bg-slate-600 text-white px-4 py-2 rounded-md hover:bg-slate-700 transition-colors flex items-center gap-2 text-sm"
+          >
+            <Download className="h-4 w-4" />
+            エクスポート
+          </button>
         </div>
         
         <div className="overflow-x-auto mb-6">
@@ -387,9 +471,18 @@ export const Dashboard: React.FC<DashboardProps> = ({ userRole }) => {
 
       {/* 契約社員詳細統計 */}
       <div className="bg-white p-6 rounded-lg shadow-sm">
-        <div className="flex items-center gap-2 mb-6">
-          <Users className="h-5 w-5 text-green-600" />
-          <h3 className="text-lg font-semibold text-slate-800">契約社員 詳細統計</h3>
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-2">
+            <Users className="h-5 w-5 text-green-600" />
+            <h3 className="text-lg font-semibold text-slate-800">契約社員 詳細統計</h3>
+          </div>
+          <button
+            onClick={exportContractStats}
+            className="bg-slate-600 text-white px-4 py-2 rounded-md hover:bg-slate-700 transition-colors flex items-center gap-2 text-sm"
+          >
+            <Download className="h-4 w-4" />
+            エクスポート
+          </button>
         </div>
         
         <div className="overflow-x-auto mb-6">
