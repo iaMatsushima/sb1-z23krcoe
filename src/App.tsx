@@ -11,18 +11,23 @@ import { EmployeeDetail } from './components/EmployeeDetail';
 import { EmployeeEdit } from './components/EmployeeEdit';
 import { QualificationList } from './components/QualificationList';
 import { QualificationEdit } from './components/QualificationEdit';
+import { BusinessCategoryList } from './components/BusinessCategoryList';
+import { BusinessCategoryEdit } from './components/BusinessCategoryEdit';
+import { DepartmentList } from './components/DepartmentList';
+import { DepartmentEdit } from './components/DepartmentEdit';
 import { Company } from './types/Company';
 import { Employee } from './types/Employee';
 import { ProjectAssignment } from './types/Project';
 import { Qualification } from './types/Qualification';
+import { BusinessCategory, Department } from './types/Settings';
 import { mockCompanies } from './data/mockCompanies';
 import { mockEmployees } from './data/mockEmployees';
 import { mockProjectAssignments, mockStandbyMembers, mockLeaveMembers } from './data/mockProjects';
 import { mockQualifications, mockQualificationStats } from './data/mockQualifications';
+import { mockBusinessCategories, mockDepartments } from './data/mockSettings';
 
 type UserRole = 'admin' | 'sales' | 'tech_leader' | 'tech_general';
 
-const LoginScreen = ({ onLogin }: { onLogin: (role: UserRole) => void }) => (
   <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
     <div className="max-w-md w-full">
       <div className="bg-white rounded-xl shadow-xl border border-slate-100 p-8">
@@ -94,15 +99,19 @@ const LoginScreen = ({ onLogin }: { onLogin: (role: UserRole) => void }) => (
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState<UserRole>('admin');
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'employees' | 'companies' | 'projects' | 'qualifications' | 'settings' | 'detail' | 'edit' | 'company-detail' | 'company-edit' | 'project-edit' | 'qualification-edit'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'employees' | 'companies' | 'projects' | 'qualifications' | 'settings' | 'detail' | 'edit' | 'company-detail' | 'company-edit' | 'project-edit' | 'qualification-edit' | 'business-categories' | 'business-category-edit' | 'departments' | 'department-edit'>('dashboard');
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
   const [selectedProject, setSelectedProject] = useState<ProjectAssignment | null>(null);
   const [selectedQualification, setSelectedQualification] = useState<Qualification | null>(null);
+  const [selectedBusinessCategory, setSelectedBusinessCategory] = useState<BusinessCategory | null>(null);
+  const [selectedDepartment, setSelectedDepartment] = useState<Department | null>(null);
   const [employees, setEmployees] = useState<Employee[]>(mockEmployees);
   const [companies, setCompanies] = useState<Company[]>(mockCompanies);
   const [projectAssignments, setProjectAssignments] = useState<ProjectAssignment[]>(mockProjectAssignments);
   const [qualifications, setQualifications] = useState<Qualification[]>(mockQualifications);
+  const [businessCategories, setBusinessCategories] = useState<BusinessCategory[]>(mockBusinessCategories);
+  const [departments, setDepartments] = useState<Department[]>(mockDepartments);
 
   const handleLogin = (role: UserRole) => {
     setUserRole(role);
@@ -116,6 +125,8 @@ const App = () => {
     setSelectedCompany(null);
     setSelectedProject(null);
     setSelectedQualification(null);
+    setSelectedBusinessCategory(null);
+    setSelectedDepartment(null);
   };
 
   const handleEmployeeDetail = (employee: Employee) => {
@@ -232,6 +243,68 @@ const App = () => {
     setActiveTab('qualifications');
   };
 
+  // Business Category handlers
+  const handleAddBusinessCategory = () => {
+    setSelectedBusinessCategory(null);
+    setActiveTab('business-category-edit');
+  };
+
+  const handleBusinessCategoryEdit = (category: BusinessCategory) => {
+    setSelectedBusinessCategory(category);
+    setActiveTab('business-category-edit');
+  };
+
+  const handleBusinessCategorySave = (category: BusinessCategory) => {
+    if (selectedBusinessCategory) {
+      setBusinessCategories(prev => prev.map(c => c.id === category.id ? category : c));
+    } else {
+      setBusinessCategories(prev => [...prev, category]);
+    }
+    setSelectedBusinessCategory(category);
+    setActiveTab('business-categories');
+  };
+
+  const handleBusinessCategoryEditCancel = () => {
+    setActiveTab('business-categories');
+  };
+
+  const handleBusinessCategoryDelete = (categoryId: string) => {
+    if (confirm('この事業分類を削除しますか？')) {
+      setBusinessCategories(prev => prev.filter(c => c.id !== categoryId));
+    }
+  };
+
+  // Department handlers
+  const handleAddDepartment = () => {
+    setSelectedDepartment(null);
+    setActiveTab('department-edit');
+  };
+
+  const handleDepartmentEdit = (department: Department) => {
+    setSelectedDepartment(department);
+    setActiveTab('department-edit');
+  };
+
+  const handleDepartmentSave = (department: Department) => {
+    if (selectedDepartment) {
+      setDepartments(prev => prev.map(d => d.id === department.id ? department : d));
+    } else {
+      setDepartments(prev => [...prev, department]);
+    }
+    setSelectedDepartment(department);
+    setActiveTab('departments');
+  };
+
+  const handleDepartmentEditCancel = () => {
+    setActiveTab('departments');
+  };
+
+  const handleDepartmentDelete = (departmentId: string) => {
+    if (confirm('この部署を削除しますか？')) {
+      setDepartments(prev => prev.filter(d => d.id !== departmentId));
+    }
+  };
+
   if (!isLoggedIn) {
     return <LoginScreen onLogin={handleLogin} />;
   }
@@ -294,7 +367,7 @@ const App = () => {
               <button
                 onClick={() => setActiveTab('settings')}
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  activeTab === 'settings' || activeTab === 'qualifications' || activeTab === 'qualification-edit'
+                  activeTab === 'settings' || activeTab === 'qualifications' || activeTab === 'qualification-edit' || activeTab === 'business-categories' || activeTab === 'business-category-edit' || activeTab === 'departments' || activeTab === 'department-edit'
                     ? 'bg-slate-100 text-slate-900'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
@@ -352,6 +425,34 @@ const App = () => {
                   </div>
                 </div>
               </button>
+              <button
+                onClick={() => setActiveTab('business-categories')}
+                className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow text-left"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center">
+                    <Building2 className="h-6 w-6 text-green-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-slate-800">事業分類管理</h3>
+                    <p className="text-sm text-slate-600">事業分類の登録と管理</p>
+                  </div>
+                </div>
+              </button>
+              <button
+                onClick={() => setActiveTab('departments')}
+                className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow text-left"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <Users className="h-6 w-6 text-purple-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-slate-800">部署管理</h3>
+                    <p className="text-sm text-slate-600">部署の登録と管理</p>
+                  </div>
+                </div>
+              </button>
             </div>
           </div>
         )}
@@ -403,6 +504,36 @@ const App = () => {
             qualification={selectedQualification || undefined}
             onSave={handleQualificationSave} 
             onCancel={handleQualificationEditCancel} 
+          />
+        )}
+        {activeTab === 'business-categories' && (
+          <BusinessCategoryList 
+            categories={businessCategories}
+            onCategoryEdit={handleBusinessCategoryEdit}
+            onCategoryDelete={handleBusinessCategoryDelete}
+            onAddCategory={handleAddBusinessCategory}
+          />
+        )}
+        {activeTab === 'business-category-edit' && (
+          <BusinessCategoryEdit 
+            category={selectedBusinessCategory || undefined}
+            onSave={handleBusinessCategorySave} 
+            onCancel={handleBusinessCategoryEditCancel} 
+          />
+        )}
+        {activeTab === 'departments' && (
+          <DepartmentList 
+            departments={departments}
+            onDepartmentEdit={handleDepartmentEdit}
+            onDepartmentDelete={handleDepartmentDelete}
+            onAddDepartment={handleAddDepartment}
+          />
+        )}
+        {activeTab === 'department-edit' && (
+          <DepartmentEdit 
+            department={selectedDepartment || undefined}
+            onSave={handleDepartmentSave} 
+            onCancel={handleDepartmentEditCancel} 
           />
         )}
       </main>
