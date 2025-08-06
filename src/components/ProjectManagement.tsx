@@ -25,6 +25,7 @@ export const ProjectManagement: React.FC<ProjectManagementProps> = ({
 
   const sesUpperAssignments = filteredAssignments.filter(a => a.category === 'SES・上位');
   const sesBpAssignments = filteredAssignments.filter(a => a.category === 'SES・BP');
+  const contractBpAssignments = filteredAssignments.filter(a => a.category === '請負・BP');
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('ja-JP', {
@@ -69,7 +70,9 @@ export const ProjectManagement: React.FC<ProjectManagementProps> = ({
                   <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
                     assignment.category === 'SES・上位' 
                       ? 'bg-blue-100 text-blue-800' 
-                      : 'bg-green-100 text-green-800'
+                      : assignment.category === 'SES・BP'
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-purple-100 text-purple-800'
                   }`}>
                     {assignment.category}
                   </span>
@@ -173,7 +176,7 @@ export const ProjectManagement: React.FC<ProjectManagementProps> = ({
         <div className="p-6">
           {activeTab === 'assignments' && (
             <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                 <div className="bg-blue-50 p-4 rounded-lg">
                   <div className="flex items-center justify-between">
                     <div>
@@ -195,18 +198,28 @@ export const ProjectManagement: React.FC<ProjectManagementProps> = ({
                 <div className="bg-purple-50 p-4 rounded-lg">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-purple-600">総売上予想</p>
-                      <p className="text-2xl font-bold text-purple-800">
+                      <p className="text-sm text-purple-600">請負・BP</p>
+                      <p className="text-2xl font-bold text-purple-800">{contractBpAssignments.length}件</p>
+                    </div>
+                    <FileText className="h-8 w-8 text-purple-500" />
+                  </div>
+                </div>
+                <div className="bg-purple-50 p-4 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-orange-600">総売上予想</p>
+                      <p className="text-2xl font-bold text-orange-800">
                         {formatCurrency(filteredAssignments.reduce((sum, a) => sum + a.unitPrice * a.personMonth, 0))}
                       </p>
                     </div>
-                    <Yen className="h-8 w-8 text-purple-500" />
+                    <Yen className="h-8 w-8 text-orange-500" />
                   </div>
                 </div>
               </div>
 
               <AssignmentTable title="SES・上位" assignments={sesUpperAssignments} />
               <AssignmentTable title="SES・BP" assignments={sesBpAssignments} />
+              <AssignmentTable title="請負・BP" assignments={contractBpAssignments} />
             </div>
           )}
 

@@ -1,7 +1,7 @@
 export interface ProjectAssignment {
   id: string;
   companyName: string;
-  category: 'SES・上位' | 'SES・BP';
+  category: 'SES・上位' | 'SES・BP' | '請負・BP';
   engineerName: string;
   period: string;
   unitPrice: number;

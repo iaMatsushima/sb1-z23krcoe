@@ -84,6 +84,48 @@ export const mockProjectAssignments: ProjectAssignment[] = [
     timesheetSource: 'メール',
     status: 'active',
     assignedDate: '2024-01-15'
+  },
+  {
+    id: '5',
+    companyName: '株式会社システムデザイン',
+    category: '請負・BP',
+    engineerName: '渡辺 健二',
+    period: '2024-04-01 ~ 2024-12-31',
+    unitPrice: 700000,
+    personMonth: 1.0,
+    projectName: 'Webシステム開発',
+    overtimeRate: 0,
+    deductionRate: 0,
+    timeRange: '成果物納期',
+    timeUnit: '成果物',
+    remarks: '請負契約',
+    contractType: '請負契約',
+    dispatchConflictDate: '',
+    paymentSite: '検収後翌月末',
+    timesheetSource: '不要',
+    status: 'active',
+    assignedDate: '2024-04-01'
+  },
+  {
+    id: '6',
+    companyName: '協力会社C',
+    category: '請負・BP',
+    engineerName: '松本 真理',
+    period: '2024-05-01 ~ 2024-10-31',
+    unitPrice: 650000,
+    personMonth: 1.0,
+    projectName: 'ECサイトリニューアル',
+    overtimeRate: 0,
+    deductionRate: 0,
+    timeRange: '成果物納期',
+    timeUnit: '成果物',
+    remarks: '請負契約・フロントエンド',
+    contractType: '請負契約',
+    dispatchConflictDate: '',
+    paymentSite: '検収後翌月末',
+    timesheetSource: '不要',
+    status: 'active',
+    assignedDate: '2024-05-01'
   }
 ];
 
