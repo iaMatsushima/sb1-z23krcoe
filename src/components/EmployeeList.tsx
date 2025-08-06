@@ -6,12 +6,14 @@ interface EmployeeListProps {
   employees: Employee[];
   onEmployeeDetail: (employee: Employee) => void;
   onEmployeeEdit: (employee: Employee) => void;
+  onAddEmployee: () => void;
 }
 
 export const EmployeeList: React.FC<EmployeeListProps> = ({
   employees,
   onEmployeeDetail,
-  onEmployeeEdit
+  onEmployeeEdit,
+  onAddEmployee
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterDepartment, setFilterDepartment] = useState<string>('all');
@@ -60,7 +62,10 @@ export const EmployeeList: React.FC<EmployeeListProps> = ({
             <option value="正社員">正社員</option>
             <option value="契約社員">契約社員</option>
           </select>
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2">
+          <button 
+            onClick={onAddEmployee}
+            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center gap-2"
+          >
             <Plus className="h-4 w-4" />
             新規登録
           </button>

@@ -3,14 +3,51 @@ import { Plus, X, Building2, Calendar, CheckCircle, XCircle, User, Trash2 } from
 import { Employee, Dependent } from '../types/Employee';
 
 interface EmployeeEditProps {
-  employee: Employee;
+  employee?: Employee;
   onSave: (employee: Employee) => void;
   onCancel: () => void;
 }
 
 export const EmployeeEdit: React.FC<EmployeeEditProps> = ({ employee, onSave, onCancel }) => {
   const [activeTab, setActiveTab] = useState<'basic' | 'dependents'>('basic');
-  const [formData, setFormData] = useState<Employee>(employee);
+  const [formData, setFormData] = useState<Employee>(employee || {
+    id: '',
+    kantoItsNumber: '',
+    dependentInsuranceCard: '無',
+    department: '技術部',
+    name: '',
+    nameKana: '',
+    gender: '男性',
+    email: '',
+    birthDate: '',
+    previousAddress: '',
+    postalCode: '',
+    address1: '',
+    address2: '',
+    phone: '',
+    age: 0,
+    joinDate: new Date().toISOString().split('T')[0],
+    leaveDate: '',
+    leaveEndOfMonth: '',
+    status: '在籍',
+    socialInsuranceJoinDate: new Date().toISOString().split('T')[0],
+    firstPaidLeaveDate: '',
+    employmentType: '正社員',
+    fullTimeConversionDate: '',
+    yearsOfService: 0,
+    monthsOfService: 0,
+    role: '',
+    employmentInsuranceNumber: '',
+    basicPensionNumber: '',
+    standardMonthlyRemunerationHealth: 0,
+    standardMonthlyRemunerationPension: 0,
+    type: '一般',
+    roleCategory: '技術職',
+    finalEducation: '大学卒',
+    qualifications: [],
+    nearestStation: '',
+    dependents: []
+  });
 
   const handleInputChange = (field: keyof Employee, value: string | number | string[]) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -77,13 +114,19 @@ export const EmployeeEdit: React.FC<EmployeeEditProps> = ({ employee, onSave, on
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(formData);
+    const updatedEmployee = {
+      ...formData,
+      id: formData.id || Date.now().toString()
+    };
+    onSave(updatedEmployee);
   };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold text-slate-800">社員情報編集</h2>
+        <h2 className="text-xl font-semibold text-slate-800">
+          {employee ? '社員情報編集' : '新規社員登録'}
+        </h2>
         <div className="flex items-center gap-3">
           <button
             onClick={onCancel}

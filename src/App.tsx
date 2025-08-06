@@ -121,14 +121,27 @@ const App = () => {
     setActiveTab('edit');
   };
 
+  const handleAddEmployee = () => {
+    setSelectedEmployee(null);
+    setActiveTab('edit');
+  };
+
   const handleEmployeeSave = (updatedEmployee: Employee) => {
-    setEmployees(prev => prev.map(emp => emp.id === updatedEmployee.id ? updatedEmployee : emp));
+    if (selectedEmployee) {
+      setEmployees(prev => prev.map(emp => emp.id === updatedEmployee.id ? updatedEmployee : emp));
+    } else {
+      setEmployees(prev => [...prev, updatedEmployee]);
+    }
     setSelectedEmployee(updatedEmployee);
     setActiveTab('detail');
   };
 
   const handleEditCancel = () => {
-    setActiveTab('detail');
+    if (selectedEmployee) {
+      setActiveTab('detail');
+    } else {
+      setActiveTab('employees');
+    }
   };
 
   const handleCompanyDetail = (company: Company) => {
@@ -282,7 +295,7 @@ const App = () => {
         {activeTab === 'detail' && selectedEmployee && <EmployeeDetail employee={selectedEmployee} onEdit={handleEmployeeEdit} />}
         {activeTab === 'edit' && selectedEmployee && (
           <EmployeeEdit 
-            employee={selectedEmployee} 
+            employee={selectedEmployee || undefined}
             onSave={handleEmployeeSave} 
             onCancel={handleEditCancel} 
           />
@@ -305,6 +318,7 @@ const App = () => {
            project={selectedProject || undefined}
            onSave={handleProjectSave} 
            onCancel={handleProjectEditCancel} 
+            onAddEmployee={handleAddEmployee}
          />
        )}
       </main>
