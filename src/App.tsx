@@ -469,7 +469,6 @@ const App = () => {
             }}
           />
         )}
-        {activeTab === 'detail' && selectedEmployee && <EmployeeDetail employee={selectedEmployee} onEdit={handleEmployeeEdit} />}
         {activeTab === 'detail' && selectedEmployee && (
           <EmployeeDetail 
             employee={selectedEmployee} 
